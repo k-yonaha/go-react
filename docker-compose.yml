@@ -1,0 +1,32 @@
+services:
+  # Go (Echo) サーバー
+  go:
+    container_name: go-app
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    volumes:
+      - ./backend:/go/src/app 
+    ports:
+      - "8080:8080" 
+    networks:
+      - common
+
+  # React 開発サーバー
+  react:
+    container_name: react-app
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - common
+
+networks:
+  common:
+    driver: bridge
