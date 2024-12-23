@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import './App.css';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -12,7 +14,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App border border-gray-400 rounded-2xl">
       <h1>Message from Go Backend:</h1>
       <p>{message}</p>
     </div>
