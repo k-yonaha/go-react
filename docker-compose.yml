@@ -27,6 +27,27 @@ services:
     networks:
       - common
 
+  mariadb:
+    container_name: db
+    image: mariadb:11.0
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_DATABASE: sample
+      MARIADB_USER: db-user
+      MARIADB_PASSWORD: db-pass
+      TZ: 'Asia/Tokyo' 
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - common
+
+volumes:
+  dbdata:
+    driver: local
+
+
 networks:
   common:
     driver: bridge
