@@ -13,8 +13,10 @@ const App = () => {
       }}
     >
       <Routes>
+        {/* 部屋一覧ページ */}
         <Route path="/" element={<RoomListPage />} />
-        {/* <Route path="/room/:roomId" element={<ChatRoomPage />} /> チャットルームページ */}
+        {/* チャットルームページ */}
+        {/* <Route path="/room/:roomId" element={<ChatRoomPage />} />  */}
       </Routes>
     </BrowserRouter>
   );

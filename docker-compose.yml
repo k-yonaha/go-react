@@ -11,6 +11,8 @@ services:
       - "8080:8080" 
     networks:
       - common
+    depends_on:
+      - mariadb
 
   # React 開発サーバー
   react:
