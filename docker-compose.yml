@@ -12,7 +12,7 @@ services:
     networks:
       - common
     depends_on:
-      - mariadb
+      - postgres
 
   # React 開発サーバー
   react:
@@ -29,24 +29,23 @@ services:
     networks:
       - common
 
-  mariadb:
-    container_name: db
-    image: mariadb:11.0
+  postgres:
+    container_name: db-postgres
+    image: postgres:15
     ports:
-      - 3306:3306
+      - "5432:5432"
     environment:
-      MARIADB_ROOT_PASSWORD: password
-      MARIADB_DATABASE: sample
-      MARIADB_USER: db-user
-      MARIADB_PASSWORD: db-pass
-      TZ: 'Asia/Tokyo' 
+      POSTGRES_USER: db-user
+      POSTGRES_PASSWORD: db-pass
+      POSTGRES_DB: sample
+      TZ: 'Asia/Tokyo'
     volumes:
-      - dbdata:/var/lib/mysql
+      - db-postgres:/var/lib/postgresql/data
     networks:
       - common
 
 volumes:
-  dbdata:
+  db-postgres:
     driver: local
 
 
