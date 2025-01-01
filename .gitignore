@@ -18,6 +18,9 @@ backend/go.work
 backend/go.work.sum
 
 
+backend/extracted_files/
+
+
 backend/.env
 
 #frontend

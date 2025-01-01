@@ -13,4 +13,5 @@ func InitRoutes(e *echo.Echo) {
 	e.GET("/api/rooms/:roomId/messages", controllers.GetMessages)
 	e.POST("/api/rooms", controllers.CreateRoom)
 	e.GET("/ws", utils.HandleWebSocket)
+	e.GET("/api/downloadSchedule", controllers.DownloadSchedule)
 }

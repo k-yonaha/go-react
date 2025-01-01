@@ -2,7 +2,7 @@ FROM golang:1.23.3-alpine
 
 WORKDIR /go/src/app
 
-RUN apk --no-cache add git gcc musl-dev tzdata
+RUN apk --no-cache add git gcc musl-dev tzdata p7zip
 
 COPY backend/go.mod backend/go.sum ./
 RUN go mod tidy
