@@ -1,10 +1,7 @@
 package models
 
 import (
-	"fmt"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Participant struct {
@@ -30,19 +27,4 @@ type RaceSchedule struct {
 	Result       string    `gorm:"type:text"` // 結果
 	CreatedAt    time.Time `gorm:"autoCreateTime"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime"`
-}
-
-func CreateRaceSchedule(db *gorm.DB, schedule *RaceSchedule) error {
-	return db.Create(schedule).Error
-}
-
-func RaceScheduleExists(db *gorm.DB, date time.Time) (bool, error) {
-
-	var count int64
-	// race_dateが一致するレース情報が存在するか確認
-	err := db.Model(&RaceSchedule{}).Where("race_date = ?", date).Count(&count).Error
-	if err != nil {
-		return false, fmt.Errorf("レース情報の存在確認に失敗しました: %v", err)
-	}
-	return count > 0, nil
 }

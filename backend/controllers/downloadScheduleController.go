@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"backend/models"
+	"backend/services"
 	"backend/utils"
 	"fmt"
 	"io"
@@ -62,7 +63,7 @@ func DownloadSchedule(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "日付の形式が正しくありません")
 	}
 	utcDate := time.Date(parsedDate.Year(), parsedDate.Month(), parsedDate.Day(), 0, 0, 0, 0, time.UTC)
-	exists, err := models.RaceScheduleExists(database.DB, utcDate)
+	exists, err := services.RaceScheduleExists(database.DB, utcDate)
 	if err != nil {
 		return fmt.Errorf("レーススケジュールの確認に失敗しました: %v", err)
 	}
@@ -120,7 +121,7 @@ func DownloadAndSaveRaceSchedule(c echo.Context, rawData []byte) error {
 	// データベースに保存
 
 	for _, raceSchedule := range raceSchedules {
-		err := models.CreateRaceSchedule(database.DB, &raceSchedule)
+		err := services.CreateRaceSchedule(database.DB, raceSchedule)
 		if err != nil {
 			return fmt.Errorf("レース情報の保存に失敗しました。: %v", err)
 		}
