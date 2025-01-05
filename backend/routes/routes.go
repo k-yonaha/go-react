@@ -11,7 +11,8 @@ func InitRoutes(e *echo.Echo) {
 	// 部屋一覧を取得する
 	e.GET("/api/rooms", controllers.GetRooms)
 	e.GET("/api/rooms/:roomId/messages", controllers.GetMessages)
-	e.POST("/api/rooms", controllers.CreateRoom)
+
 	e.GET("/ws", utils.HandleWebSocket)
-	e.GET("/api/downloadSchedule", controllers.DownloadSchedule)
+	e.GET("/api/download-schedule", controllers.DownloadSchedule)
+	e.GET("/api/race-schedule", controllers.GetNextRaceByCourse)
 }
