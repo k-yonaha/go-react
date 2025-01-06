@@ -242,15 +242,19 @@ func extractRaceProgram(line string) string {
 
 // レース日付を抽出
 func extractRaceDate(line string) time.Time {
+	line = strings.ReplaceAll(line, "　", "")
 	// "２０２４年１２月２３日" のような形式を処理
 	dateParts := strings.Fields(line)
+
 	if len(dateParts) >= 3 {
 		// 全角を半角にする
-		raceDate := toHalfWidth(dateParts[2])
+		raceDate := toHalfWidth(dateParts[1])
 
 		raceDate = strings.ReplaceAll(raceDate, "年", "-")
 		raceDate = strings.ReplaceAll(raceDate, "月", "-")
 		raceDate = strings.ReplaceAll(raceDate, "日", "")
+
+		raceDate = formatDate(raceDate)
 
 		parsedDate, err := time.Parse("2006-01-02", raceDate)
 
@@ -261,6 +265,25 @@ func extractRaceDate(line string) time.Time {
 		return parsedDate
 	}
 	return time.Time{} // 日付が見つからない場合はゼロ値の time.Time を返す
+}
+
+func formatDate(date string) string {
+	// 年月日を分割
+	parts := strings.Split(date, "-")
+	if len(parts) != 3 {
+		return date
+	}
+
+	// 月と日が1桁なら先頭に0を付ける
+	if len(parts[1]) == 1 {
+		parts[1] = "0" + parts[1]
+	}
+	if len(parts[2]) == 1 {
+		parts[2] = "0" + parts[2]
+	}
+
+	// フォーマットした日付を再度結合
+	return strings.Join(parts, "-")
 }
 
 // レース時間を抽出
