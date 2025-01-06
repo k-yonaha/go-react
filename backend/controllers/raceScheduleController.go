@@ -23,3 +23,13 @@ func GetNextRaceByCourse(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, raceSchedule)
 }
+
+func GetAllRaceSchedules(c echo.Context) error {
+
+	raceSchedulesByCourse, err := services.GetRaceSchedulesByDate(database.DB)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, raceSchedulesByCourse)
+}

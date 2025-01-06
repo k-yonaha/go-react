@@ -29,9 +29,27 @@ func GetRaceScheduleByCourseName(db *gorm.DB, courseName string) (*models.RaceSc
 		Order("race_time ASC").First(&raceSchedule).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return &models.RaceSchedule{}, nil // ここで空の構造体を返す
+			return &models.RaceSchedule{}, nil
 		}
 		return nil, err
 	}
 	return &raceSchedule, nil
+}
+
+func GetRaceSchedulesByDate(db *gorm.DB) (map[string][]models.RaceSchedule, error) {
+	var raceSchedules []models.RaceSchedule
+	// 当日の日付でレースをフィルタリング
+	err := db.Where("race_time > ? AND race_time < ?", time.Now().Truncate(24*time.Hour), time.Now().Add(24*time.Hour).Truncate(24*time.Hour)).
+		Order("race_time ASC").Find(&raceSchedules).Error
+	if err != nil {
+		return nil, fmt.Errorf("レース情報の取得に失敗しました: %v", err)
+	}
+
+	// course_nameでグループ化
+	groupedByCourse := make(map[string][]models.RaceSchedule)
+	for _, raceSchedule := range raceSchedules {
+		groupedByCourse[raceSchedule.CourseName] = append(groupedByCourse[raceSchedule.CourseName], raceSchedule)
+	}
+
+	return groupedByCourse, nil
 }
