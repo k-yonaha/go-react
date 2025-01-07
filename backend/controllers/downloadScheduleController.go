@@ -302,8 +302,8 @@ func extractRaceTime(line string, raceDate time.Time) time.Time {
 			log.Printf("時間の抽出に失敗しました: %v", err)
 			return time.Time{}
 		}
-
-		parsedTime, err := time.Parse("15:04", raceTime)
+		jst, _ := time.LoadLocation("Asia/Tokyo")
+		parsedTime, err := time.ParseInLocation("15:04", raceTime, jst)
 		if err != nil {
 			log.Printf("時間のフォーマットに失敗しました1: %v", err)
 			return time.Time{}
@@ -311,7 +311,8 @@ func extractRaceTime(line string, raceDate time.Time) time.Time {
 
 		dateStr := fmt.Sprintf("%d-%02d-%02d %02d:%02d", raceDate.Year(), raceDate.Month(), raceDate.Day(), parsedTime.Hour(), parsedTime.Minute())
 
-		parsedDate, err := time.Parse("2006-01-02 15:04", dateStr)
+		parsedDate, err := time.ParseInLocation("2006-01-02 15:04", dateStr, jst)
+
 		if err != nil {
 			log.Printf("時間のフォーマットに失敗しました2: %v", err)
 			return time.Time{}
