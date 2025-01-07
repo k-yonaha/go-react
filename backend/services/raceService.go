@@ -38,8 +38,14 @@ func GetRaceScheduleByCourseName(db *gorm.DB, courseName string) (*models.RaceSc
 
 func GetRaceSchedulesByDate(db *gorm.DB) (map[string][]models.RaceSchedule, error) {
 	var raceSchedules []models.RaceSchedule
-	// 当日の日付でレースをフィルタリング
-	err := db.Where("race_time > ? AND race_time < ?", time.Now().Truncate(24*time.Hour), time.Now().Add(24*time.Hour).Truncate(24*time.Hour)).
+
+	loc, _ := time.LoadLocation("Asia/Tokyo")
+	now := time.Now().In(loc)
+
+	startOfDay := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
+	endOfDay := startOfDay.Add(24 * time.Hour)
+
+	err := db.Where("race_time >= ? AND race_time < ?", startOfDay, endOfDay).
 		Order("race_time ASC").Find(&raceSchedules).Error
 	if err != nil {
 		return nil, fmt.Errorf("レース情報の取得に失敗しました: %v", err)
