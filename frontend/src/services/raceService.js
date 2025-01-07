@@ -20,16 +20,6 @@ export const getRaceSchedulesByDate = async () => {
         throw new Error("レース情報の取得に失敗しました");
       }
       const data = await response.json();
-
-      // レース情報を course_name ごとにグループ化
-    //   const raceSchedulesByCourse = data.reduce((acc, raceSchedule) => {
-    //     const { course_name } = raceSchedule;
-    //     if (!acc[course_name]) {
-    //       acc[course_name] = [];
-    //     }
-    //     acc[course_name].push(raceSchedule);
-    //     return acc;
-    //   }, {});
       
       return data;
     } catch (error) {
