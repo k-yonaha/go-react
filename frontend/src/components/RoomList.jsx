@@ -43,7 +43,7 @@ const RoomList = () => {
           key={room.ID}
           to={`/room/${room.ID}`}
           className={`border-2 border-black box-border rounded-lg flex flex-col items-center justify-between h-24 w-40 sm:w-40 md:w-46 lg:w-56 max-w-full p-2 ${
-            raceSchedules[room.Name]
+            !raceSchedules[room.Name]
               ? "disabled opacity-50 cursor-not-allowed pointer-events-none"
               : ""
           }`}
@@ -55,21 +55,21 @@ const RoomList = () => {
           </div>
 
           <div className="text-sm text-black w-full border-t border-b border-black bg-white">
-            {raceSchedules[room.Name].RaceType > 0
-              ? raceSchedules[room.Name].RaceType
+            {raceSchedules[room.Name]
+              ? raceSchedules[room.Name][0].RaceType
               : "--"}{" "}
-            {raceSchedules[room.Name].RaceType > 0
-              ? raceSchedules[room.Name].RaceDay
+            {raceSchedules[room.Name]
+              ? raceSchedules[room.Name][0].RaceDay
               : "--"}
           </div>
 
           <div className="text-sm text-black w-full p-1 bg-white rounded-b-lg">
-            {raceSchedules[room.Name].RaceType > 0
-              ? raceSchedules[room.Name].RaceNumber
-              : "--"}
-            {raceSchedules[room.Name].RaceType > 0 &&
-            raceSchedules[room.Name].RaceTime
-              ? new Date(raceSchedules[room.Name].RaceTime).toLocaleTimeString()
+            <span className="mr-2">{raceSchedules[room.Name]
+              ? raceSchedules[room.Name][0].RaceNumber + "R"
+              : "--"}</span>
+            {raceSchedules[room.Name] &&
+            raceSchedules[room.Name][0].RaceTime
+              ? new Date(raceSchedules[room.Name][0].RaceTime).toLocaleTimeString()
               : "-- --"}
           </div>
         </Link>

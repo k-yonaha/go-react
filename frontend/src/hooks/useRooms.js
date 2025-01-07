@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getRooms } from "../services/roomService";
-import { getNextRaceByCourse } from "../services/raceService";
+import { getRaceSchedulesByDate } from "../services/raceService";
 
 const useRooms = () => {
   const [rooms, setRooms] = useState([]);
@@ -9,31 +9,33 @@ const useRooms = () => {
   const [raceSchedules, setRaceSchedules] = useState({});
 
   useEffect(() => {
-    const fetchRoomsAndRaceSchedules = async () => {
+    const fetchRooms = async () => {
       try {
-        const roomData = await getRooms();
-        setRooms(roomData);
-
-        const schedules = {};
-        // 各部屋に対応する次のレース情報を取得
-        for (const room of roomData) {
-          const raceData = await getNextRaceByCourse(room.Name);  // 部屋名を基に次のレース情報を取得
-          if (raceData) {
-            schedules[room.Name] = raceData;
-          }
-        }
-        setRaceSchedules(schedules);  // レース情報を保存
+        const roomsData = await getRooms();
+        setRooms(roomsData);
       } catch (err) {
         setError(err.message);
-      } finally {
-        setLoading(false);
+      }
+    };
+    const fetchRaceSchedules = async () => {
+      try {
+        const raceSchedulesData = await getRaceSchedulesByDate();
+        setRaceSchedules(raceSchedulesData);
+      } catch (err) {
+        console.log(err)
+        setError(err.message);
       }
     };
 
-    fetchRoomsAndRaceSchedules();
+    fetchRooms();
+    fetchRaceSchedules();
   }, []);
-
-  return { rooms, loading, error , raceSchedules};
+  useEffect(() => {
+    if (rooms.length > 0) {
+      setLoading(false);
+    }
+  }, [rooms]);
+  return { rooms, loading, error, raceSchedules };
 };
 
 export default useRooms;
