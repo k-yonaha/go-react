@@ -12,7 +12,7 @@ func InitRoutes(e *echo.Echo) {
 	e.GET("/api/rooms", controllers.GetRooms)
 	e.GET("/api/rooms/:roomId/messages", controllers.GetMessages)
 
-	e.GET("/ws", utils.HandleWebSocket)
+	e.GET("/ws/:roomId", utils.HandleWebSocket)
 	e.GET("/api/download-schedule", controllers.DownloadSchedule)
 	e.GET("/api/race-schedule", controllers.GetNextRaceByCourse)
 	e.GET("/api/race-schedule/today", controllers.GetAllRaceSchedules)
