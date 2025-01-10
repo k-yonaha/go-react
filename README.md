@@ -50,3 +50,9 @@ $ go run seeder/seeder.go
 ```
 http://localhost:8080/api/download-schedule?date=[日付(YYYYMMDD)]
 ```
+
+#### ブラウザ表示
+
+```
+http://localhost:3000/
+```
